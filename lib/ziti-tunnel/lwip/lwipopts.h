@@ -7,13 +7,25 @@
 #define MEM_SIZE              524288      /* the size of the heap memory (1600) */
 #endif
 
+#define SCAREY_DEBUGGING_LWIP 1
 #if SCAREY_DEBUGGING_LWIP
-#define MEMP_OVERFLOW_CHECK   2           /* reserves bytes before and after each memp element in every pool and fills it with a prominent default value */
-#define MEMP_SANITY_CHECK     1           /* run a sanity check after each mem_free() to make sure that the linked list of heap elements is not corrupted */
+//#define MEMP_OVERFLOW_CHECK   2           /* reserves bytes before and after each memp element in every pool and fills it with a prominent default value */
+//#define MEMP_SANITY_CHECK     1           /* run a sanity check after each mem_free() to make sure that the linked list of heap elements is not corrupted */
 //#define LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT 0
 // enable lwip logging for e.g. pbuf operations
 #define LWIP_DEBUG
-#define PBUF_DEBUG LWIP_DBG_ON
+//#define PBUF_DEBUG LWIP_DBG_ON
+#define IP_DEBUG              LWIP_DBG_ON  // Enable debugging for IP
+#define IP_REASS_DEBUG        LWIP_DBG_ON  // Enable debugging in ip_frag.c for both frag & reass
+#define TCP_DEBUG             LWIP_DBG_ON  // Enable debugging for TCP
+#define TCP_INPUT_DEBUG       LWIP_DBG_ON  // Enable debugging in tcp_in.c for incoming debug
+#define TCP_FR_DEBUG          LWIP_DBG_ON  // Enable debugging in tcp_in.c for fast retransmit
+#define TCP_RTO_DEBUG         LWIP_DBG_ON  // Enable debugging in TCP for retransmit
+#define TCP_CWND_DEBUG        LWIP_DBG_ON  // Enable debugging for TCP congestion window
+#define TCP_WND_DEBUG         LWIP_DBG_ON  // Enable debugging in tcp_in.c for window updating
+#define TCP_OUTPUT_DEBUG      LWIP_DBG_ON  // Enable debugging in tcp_out.c output functions
+#define TCP_RST_DEBUG         LWIP_DBG_ON  // Enable debugging for TCP with the RST message
+#define TCP_QLEN_DEBUG        LWIP_DBG_ON  // Enable debugging for TCP queue lengths
 #endif
 //#define MEMP_NUM_PBUF       64          /* number of memp struct pbufs (used for PBUF_ROM and PBUF_REF) */
 
@@ -48,6 +60,7 @@
 #define TCP_KEEPIDLE_DEFAULT 30000       /* 30 seconds of idle before starting to send KEEPALIVE packets */
 #define TCP_KEEPINTVL_DEFAULT 10000      /* 10 seconds interval between KEEPALIVE packets */
 #define TCP_KEEPCNT_DEFAULT 3            /* number of missed KEEPALIVE ACKs to consider the client dead */
+#define LWIP_TCP_SACK_OUT     1          /* TCP will support sending selective acknowledgements (SACKs) */
 
 // APIs
 #define LWIP_RAW 1
