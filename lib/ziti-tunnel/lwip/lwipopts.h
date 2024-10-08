@@ -27,7 +27,7 @@
 #define TCP_RST_DEBUG         LWIP_DBG_ON  // Enable debugging for TCP with the RST message
 #define TCP_QLEN_DEBUG        LWIP_DBG_ON  // Enable debugging for TCP queue lengths
 #endif
-//#define MEMP_NUM_PBUF       64          /* number of memp struct pbufs (used for PBUF_ROM and PBUF_REF) */
+#define MEMP_NUM_PBUF       64          /* number of memp struct pbufs (used for PBUF_ROM and PBUF_REF) */
 
 #ifndef MEMP_NUM_UDP_PCB
 #define MEMP_NUM_UDP_PCB      16          /* simultaneously active UDP "connections" (4) */
