@@ -450,6 +450,10 @@ netif_driver tun_open(uv_loop_t *loop, uint32_t tun_ip, uint32_t dns_ip, const c
     driver->exclude_rt   = tun_exclude_rt;
     driver->commit_routes = tun_commit_routes;
 
+    ZITI_LOG(INFO, "taking a 60 second nap so James can replace the qdisc or whatever");
+    uv_sleep(1000);
+    ZITI_LOG(INFO, "waking from qdisc nap");
+
     run_command("ip link set %s up", tun->name);
     run_command("ip addr add %s dev %s", inet_ntoa(*(struct in_addr*)&tun_ip), tun->name);
 
