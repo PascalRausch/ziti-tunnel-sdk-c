@@ -18,33 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macOS-13
-            name: macOS x86_64
-            preset: macOS-x64
-
-          - os: macOS-13
-            name: macOS arm64
-            preset: macOS-arm64
-
           - os: windows-latest
             name: Windows x86_64
             preset: windows-x64-mingw
-
-          - os: windows-latest
-            name: Windows arm64
-            preset: windows-arm64-vs2022
-
-          - os: ubuntu-20.04
-            name: Linux x86_64
-            preset: linux-x64
-
-          - os: ubuntu-20.04
-            name: Linux arm
-            preset: linux-arm
-
-          - os: ubuntu-20.04
-            name: Linux arm64
-            preset: linux-arm64
 
     steps:
       - name: Debug action
