@@ -6,7 +6,8 @@ if(NOT TUNNEL_SDK_ONLY)
         add_subdirectory(${ZITI_SDK_DIR} ${CMAKE_CURRENT_BINARY_DIR}/ziti-sdk)
     else ()
         FetchContent_Declare(ziti-sdk-c
-                GIT_REPOSITORY git@github.com:PascalRausch/ziti-sdk-c.git
+                GIT_REPOSITORY https://github.com/openziti/ziti-sdk-c.git
+                GIT_TAG ${ZITI_SDK_VERSION}
                 )
         set(ZITI_BUILD_TESTS off)
         set(ZITI_BUILD_PROGRAMS off)
