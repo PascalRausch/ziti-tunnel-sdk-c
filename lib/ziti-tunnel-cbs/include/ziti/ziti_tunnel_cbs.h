@@ -74,7 +74,7 @@ XX(AddIdentity, __VA_ARGS__)    \
 XX(Enroll, __VA_ARGS__)         \
 XX(ExternalAuth, __VA_ARGS__)   \
 XX(SetUpstreamDNS, __VA_ARGS__) \
-XX(IdTokenAuth, __VA_ARGS__)        // Defines the IdTokenAuth case 
+XX(AccessTokenAuth, __VA_ARGS__)
 
 DECLARE_ENUM(TunnelCommand, TUNNEL_COMMANDS)
 
@@ -123,9 +123,9 @@ XX(identifier, model_string, none, Identifier, __VA_ARGS__)
 TNL_IDENTITY_ID(XX, __VA_ARGS__) \
 XX(provider, model_string, none, Provider, __VA_ARGS__)
 
-#define TNL_ID_IDTOKEN_AUTH(XX, ...) \
+#define TNL_ID_ACCESSTOKEN_AUTH(XX, ...) \
 TNL_IDENTITY_ID(XX, __VA_ARGS__) \
-XX(idtoken, model_string, none, IdToken, __VA_ARGS__)
+XX(accesstoken, model_string, none, AccessToken, __VA_ARGS__)
 
 #define TNL_MFA_ENROL_RES(XX,...) \
 XX(identifier, model_string, none, Identifier, __VA_ARGS__) \
@@ -195,9 +195,8 @@ XX(controllerURL, model_string, none, ControllerURL, __VA_ARGS__)
 XX(identifier, model_string, none, identifier, __VA_ARGS__) \
 XX(ext_auth_url, model_string, none, url, __VA_ARGS__)
 
-#define TUNNEL_IDTOKEN_AUTH(XX, ...) \
-XX(identifier, model_string, none, Identifier, __VA_ARGS__) \
-XX(authSuccess, model_bool, none, AuthSuccess, __VA_ARGS__)
+#define TUNNEL_ACCESSTOKEN_AUTH(XX, ...) \
+XX(identifier, model_string, none, Identifier, __VA_ARGS__)
 
 #define TUNNEL_UPSTREAM_DNS(XX, ...) \
 XX(host, model_string, none, host, __VA_ARGS__) \
@@ -221,7 +220,7 @@ DECLARE_MODEL(tunnel_ip_dump, TNL_IP_DUMP)
 DECLARE_MODEL(tunnel_on_off_identity, TNL_ON_OFF_IDENTITY)
 DECLARE_MODEL(tunnel_identity_id, TNL_IDENTITY_ID)
 DECLARE_MODEL(tunnel_id_ext_auth, TNL_ID_EXT_AUTH)
-DECLARE_MODEL(tunnel_id_idtoken_auth, TNL_ID_IDTOKEN_AUTH)
+DECLARE_MODEL(tunnel_id_accesstoken_auth, TNL_ID_ACCESSTOKEN_AUTH)
 DECLARE_MODEL(tunnel_mfa_enrol_res, TNL_MFA_ENROL_RES)
 DECLARE_MODEL(tunnel_submit_mfa, TNL_SUBMIT_MFA)
 DECLARE_MODEL(tunnel_verify_mfa, TNL_VERIFY_MFA)
@@ -239,7 +238,7 @@ DECLARE_MODEL(tunnel_add_identity, TUNNEL_ADD_IDENTITY)
 DECLARE_MODEL(tunnel_upstream_dns, TUNNEL_UPSTREAM_DNS)
 DECLARE_MODEL(tunnel_enroll, TNL_ENROLL)
 DECLARE_MODEL(tunnel_ext_auth, TUNNEL_EXT_AUTH)
-DECLARE_MODEL(tunnel_idtoken_auth, TUNNEL_IDTOKEN_AUTH)
+DECLARE_MODEL(tunnel_accesstoken_auth, TUNNEL_ACCESSTOKEN_AUTH)
 
 #define TUNNEL_EVENTS(XX, ...) \
 XX(ContextEvent, __VA_ARGS__) \
