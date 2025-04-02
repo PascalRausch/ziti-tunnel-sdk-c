@@ -805,6 +805,60 @@ static int process_cmd(const tunnel_command *cmd, command_cb cb, void *ctx) {
             free_tunnel_id_ext_auth(&auth);
             break;
         }
+        case TunnelCommand_IdTokenAuth: {
+            tunnel_id_idtoken_auth auth = {0};
+            if (cmd->data == NULL ||
+                parse_tunnel_id_idtoken_auth(&auth, cmd->data, strlen(cmd->data)) < 0) {
+                result.error = "invalid command";
+                result.success = false;
+                free_tunnel_id_idtoken_auth(&auth);
+                break;
+            }
+
+            if (is_null(auth.identifier, "Identifier info is not found in the request", &result)) {
+                free_tunnel_id_idtoken_auth(&auth);
+                break;
+            }
+            if (is_null(auth.idtoken, "IdToken info is not found in the request", &result)) {
+                free_tunnel_id_idtoken_auth(&auth);
+                break;
+            }
+
+            struct ziti_instance_s *inst = model_map_get(&instances, auth.identifier);
+            if (is_null(inst, "ziti context not found", &result) ||
+                is_null(inst->ztx, "ziti context is not loaded", &result)) {
+                free_tunnel_id_idtoken_auth(&auth);
+                break;
+            }
+            
+            // tunnel_idtoken_auth idtoken_auth = {0};
+            // TODO: Do we need this?
+            // struct tunnel_cb_s *req = calloc(1, sizeof(*req));
+            // req->ctx = (void*)auth.identifier;
+            // auth.identifier = NULL;
+            // req->cmd_cb = cb;
+            // req->cmd_ctx = ctx;
+            
+            if (ziti_ext_auth_token(inst->ztx, auth.idtoken) == ZITI_OK) {
+                tunnel_idtoken_auth idtoken_auth = {
+                    .identifier = (char*)auth.identifier,
+                    .authSuccess = false,    // TODO: AuthSuccess is redundant (result.success)
+                };  
+                result.data = tunnel_idtoken_auth_to_json(&idtoken_auth, MODEL_JSON_COMPACT, NULL);
+                result.success = true;
+                result.code = IPC_SUCCESS;
+
+                cb(&result, ctx);
+
+                free(result.data);
+                free_tunnel_id_idtoken_auth(&auth);
+                return 0;
+            }
+            result.success = false;
+            result.error = "failed to start idtoken auth";
+            free_tunnel_id_idtoken_auth(&auth);
+            break;
+        }
         default: {
             static char err[512];
             snprintf(err, sizeof(err), "unsupported command %d[%s]",
@@ -1423,6 +1477,29 @@ static void on_ext_auth(ziti_context ztx, const char *url, void *ctx) {
     FREE(req->ctx);
     free(req);
 }
+
+/* TODO we might want to use this callback. But maybe not.
+static void on_idtoken_auth(ziti_context ztx, const char *url, void *ctx) {
+    struct tunnel_cb_s *req = ctx;
+    tunnel_result result = {
+            .success = true,
+            .code = IPC_SUCCESS,
+    };
+    if (req->cmd_cb) {
+        tunnel_idtoken_auth idtoken_auth = {
+            //.identifier = (char*)auth.identifier,
+            .identifier = (char*)req->ctx,
+            .authSuccess = true,
+        };  
+        result.data = tunnel_idtoken_auth_to_json(&idtoken_auth, MODEL_JSON_COMPACT, NULL);
+        
+        req->cmd_cb(&result, req->cmd_ctx);
+    }
+    FREE(result.data);
+    FREE(req->ctx);
+    free(req);
+}
+*/
 
 #define CHECK(lbl, op) do{ \
 int rc = (op);                  \
