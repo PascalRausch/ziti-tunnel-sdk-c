@@ -831,15 +831,7 @@ static int process_cmd(const tunnel_command *cmd, command_cb cb, void *ctx) {
                 break;
             }
             
-            // tunnel_accesstoken_auth accesstoken_auth = {0};
-            // TODO: Do we need this?
-            // struct tunnel_cb_s *req = calloc(1, sizeof(*req));
-            // req->ctx = (void*)auth.identifier;
-            // auth.identifier = NULL;
-            // req->cmd_cb = cb;
-            // req->cmd_ctx = ctx;
-            
-            if (ziti_ext_auth_token(inst->ztx, auth.accesstoken) == ZITI_OK) {
+            if (ziti_accesstoken_auth(inst->ztx, auth.accesstoken) == ZITI_OK) {
                 tunnel_accesstoken_auth accesstoken_auth = {
                     .identifier = (char*)auth.identifier,
                 };  
@@ -1476,29 +1468,6 @@ static void on_ext_auth(ziti_context ztx, const char *url, void *ctx) {
     FREE(req->ctx);
     free(req);
 }
-
-/* TODO we might want to use this callback. But maybe not.
-static void on_accesstoken_auth(ziti_context ztx, const char *url, void *ctx) {
-    struct tunnel_cb_s *req = ctx;
-    tunnel_result result = {
-            .success = true,
-            .code = IPC_SUCCESS,
-    };
-    if (req->cmd_cb) {
-        tunnel_accesstoken_auth accesstoken_auth = {
-            //.identifier = (char*)auth.identifier,
-            .identifier = (char*)req->ctx,
-            .authSuccess = true,
-        };  
-        result.data = tunnel_accesstoken_auth_to_json(&accesstoken_auth, MODEL_JSON_COMPACT, NULL);
-        
-        req->cmd_cb(&result, req->cmd_ctx);
-    }
-    FREE(result.data);
-    FREE(req->ctx);
-    free(req);
-}
-*/
 
 #define CHECK(lbl, op) do{ \
 int rc = (op);                  \
